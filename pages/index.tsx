@@ -1,0 +1,50 @@
+import Image from 'next/image'
+import { Inter, Vazirmatn } from 'next/font/google'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { GetStaticProps } from 'next';
+import useTrans from '@/utils/hooks/useTrans';
+import HomePage from '@/components/Pages/HomePage/Homepage';
+import { ReactElement } from 'react';
+import ClientLayout from '@/components/Layouts/ClientLayout';
+
+
+const inter = Inter({ subsets: ['latin'] })
+
+
+const vazirmatn = Vazirmatn({
+  subsets: ["latin", "arabic", "latin-ext"] , 
+  weight:["100","200", "300" ,"400", "500", "600", "700", "800", "900"],
+  variable: '--font-vazirmatn',
+});
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  // fetch a list of properties from the database
+  const {locale} = context
+  return {
+    props: { ...(await serverSideTranslations(locale as string, ['common'])), },
+  };
+};
+
+
+
+function Home() {
+  const t = useTrans()
+  return (
+    // <main
+    //   className={`flex min-h-screen flex-col items-center justify-between p-24 ${vazirmatn.className}`}
+    // >
+        <HomePage />
+    // </main>
+  )
+}
+
+Home.getLayout = function getLayout(page: ReactElement) {
+  return (
+    
+      <ClientLayout>{page}</ClientLayout>
+    
+  )
+}
+
+export default Home
+ 
